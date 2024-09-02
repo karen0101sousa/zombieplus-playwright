@@ -10,6 +10,7 @@ Repositório do projeto de testes automatizados do sistema Zombie Plus, constru�
 - Javascript
 - Faker
 - PostgreSQL
+- Docker
 
 ## 🤖 Como executar
 
