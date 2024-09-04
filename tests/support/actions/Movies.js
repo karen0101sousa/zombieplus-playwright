@@ -1,16 +1,9 @@
 const { expect } = require('@playwright/test')
 
-export class MoviesPage {
+export class Movies {
 
     constructor(page) {
         this.page = page
-    }
-
-    async isLoggedIn() {
-        // const logoutLink = this.page.locator('a[href="/logout"]')
-        // await expect(logoutLink).toBeVisible()
-        await this.page.waitForLoadState('networkidle')
-        await expect(this.page).toHaveURL(/.*admin/)
     }
 
     async goForm() {
@@ -45,10 +38,35 @@ export class MoviesPage {
             .filter({ hasText: movie.release_year })
             .click()
 
+        await this.page; locator('input[name=cover]')
+            .setInputFiles('tests/support/fixtures' + movie.cover)
+
+        if (movie.featured) {
+            await this.page.locator('.featured .react-switch').click()
+        }
+
         await this.submit()
     }
+
+    async search(target) {
+        await this.page.getByPlaceholder('Busque pelo nome')
+            .fill(target)
+        
+        await this.page.click('.actions button')
+    }
+
+    async tableHave(content){
+        const rows = thispage.getByRole('row')
+        await expect(rows).toContainText(content)
+    }
+
     async alertHaveText(text) {
         const alert = this.page.locator('span[class$=alert]')
         await expect(alert).toHaveText(text)
+    }
+
+    async remove(title) {
+        await this.page.getByRole('row', { name: title }).getByRole('button').click()
+        await this.page.click('.confirm-removal')
     }
 }
